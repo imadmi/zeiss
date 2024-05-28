@@ -7,6 +7,7 @@ import React from "react";
 export default function TabLayout() {
   return (
     <Tabs
+      initialRouteName="home"
       screenOptions={{
         tabBarInactiveTintColor: "#A0A0A0",
         tabBarActiveTintColor: "#FFFFFF",
@@ -19,11 +20,16 @@ export default function TabLayout() {
           alignItems: "center",
           borderRadius: 500,
         },
-
         tabBarShowLabel: false,
         headerShown: false,
       }}
     >
+      <Tabs.Screen
+        name="index"
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
       <Tabs.Screen
         name="history"
         options={{
@@ -43,9 +49,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="tags"
         options={{
-          title: "index",
+          title: "tags",
           tabBarIcon: ({ color }) => (
             <View className="h-[60px] translate-y-[13px] justify-center">
               <Image
