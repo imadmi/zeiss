@@ -1,9 +1,17 @@
-import { View, Text, ScrollView, StatusBar, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StatusBar,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { router } from "expo-router";
 
 const Home = () => {
   return (
@@ -14,7 +22,7 @@ const Home = () => {
         <View
           className="absolute top-0 left-0  h-14 w-full flex-row items-center justify-between"
           style={{
-            backgroundColor: "rrgba(12, 25, 47, 1)",
+            backgroundColor: "rgba(12, 25, 47, 1)",
           }}
         >
           <Text className="text-white font-semibold ml-6 text-lg">Zeiss</Text>
@@ -69,39 +77,45 @@ export default Home;
 
 const Commande = () => {
   return (
-    <View className="bg-[#EBF0FF] w-full shadow-sm flex-row justify-between rounded-lg mt-4">
-      <View className="space-y-2 p-4">
-        <Text className="text-black font-bold text-xs">BL 4873/2024</Text>
-        <Text className="text-base text-black">Mohammad Jannati</Text>
-        <View className="flex-row">
-          <Image
-            id="building"
-            source={require("../../assets/icons/building.png")}
-            contentFit="contain"
-            className="w-4 h-4 mr-2"
-          />
-          <Text className="text-xs text-black">Livraison 12/03/2024</Text>
+    <TouchableOpacity
+      onPress={() => {
+        router.push("/chat");
+      }}
+    >
+      <View className="bg-[#EBF0FF] w-full shadow-sm flex-row justify-between rounded-lg mt-4">
+        <View className="space-y-2 p-4">
+          <Text className="text-black font-bold text-xs">BL 4873/2024</Text>
+          <Text className="text-base text-black">Mohammad Jannati</Text>
+          <View className="flex-row">
+            <Image
+              id="building"
+              source={require("../../assets/icons/building.png")}
+              contentFit="contain"
+              className="w-4 h-4 mr-2"
+            />
+            <Text className="text-xs text-black">Livraison 12/03/2024</Text>
+          </View>
+        </View>
+        <View className="space-y-2 p-4">
+          <View className="flex-row rounded-xl justify-end">
+            <Text className="text-xs bg-white p-1 px-2 font-bold rounded-xl">
+              1.6
+            </Text>
+            <Text className="text-xs bg-gray-200 p-1 px-2 font-bold rounded-xl">
+              SILVER
+            </Text>
+          </View>
+          <View className="justify-end items-end">
+            <Text className="font-thin text-[10px] text-black">
+              UV PROTECT DURAVISION
+            </Text>
+          </View>
+          <View className="justify-end items-end">
+            <Text className="text-lg text-black ">340 DH</Text>
+          </View>
         </View>
       </View>
-      <View className="space-y-2 p-4">
-        <View className="flex-row rounded-xl justify-end">
-          <Text className="text-xs bg-white p-1 px-2 font-bold rounded-xl">
-            1.6
-          </Text>
-          <Text className="text-xs bg-gray-200 p-1 px-2 font-bold rounded-xl">
-            SILVER
-          </Text>
-        </View>
-        <View className="justify-end items-end">
-          <Text className="font-thin text-[10px] text-black">
-            UV PROTECT DURAVISION
-          </Text>
-        </View>
-        <View className="justify-end items-end">
-          <Text className="text-lg text-black ">340 DH</Text>
-        </View>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
