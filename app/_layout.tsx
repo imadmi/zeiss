@@ -1,10 +1,13 @@
-import { Stack } from 'expo-router/stack';
+import { AppProvider } from "@/context";
+import { Stack } from "expo-router/stack";
 
 export default function Layout() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="chat" options={{ headerShown: false }} />
-    </Stack>
+    <AppProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="chat" options={{ headerShown: false }} />
+      </Stack>
+    </AppProvider>
   );
 }

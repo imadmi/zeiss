@@ -1,23 +1,18 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type User = {
-  id: string;
-  name: string;
-};
-
 type AppContextProps = {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  inpuType: "valid" | "notValid" | "text";
+  setInpuType: (input: "valid" | "notValid" | "text") => void;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [inpuType, setInpuType] = useState<"valid" | "notValid" | "text">("notValid");
 
   const contextValue: AppContextProps = {
-    user,
-    setUser,
+    inpuType,
+    setInpuType,
   };
 
   return (
