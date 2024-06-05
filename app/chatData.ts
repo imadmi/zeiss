@@ -5,7 +5,7 @@ const chatData: ChatType = [
       id: "1",
       message: "Bonjour, je suis Amine, responsable de prise de commande, pour passer votre commande, commencer par choisir un indice",
       sender: false,
-      avatar: "https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w480-h960-rw",
+      avatar: "https://www.corporatephotographerslondon.com/wp-content/uploads/2021/07/LinkedIn_profile_photo_sample_1.jpg",
       choices: [
         {
           choiceId: "1",
@@ -28,7 +28,7 @@ const chatData: ChatType = [
       id: "2",
       message: "Vous avez choisi l’indice 1.5choisissez le traitement ou modifier l’indice ?",
       sender: false,
-      avatar: "https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w480-h960-rw",
+      avatar: "https://www.corporatephotographerslondon.com/wp-content/uploads/2021/07/LinkedIn_profile_photo_sample_1.jpg",
       choices: [
         {
           choiceId: "1",
@@ -46,7 +46,7 @@ const chatData: ChatType = [
       id: "3",
       message: "",
       sender: false,
-      avatar: "https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w480-h960-rw",
+      avatar: "https://www.corporatephotographerslondon.com/wp-content/uploads/2021/07/LinkedIn_profile_photo_sample_1.jpg",
       choices: [
         {
           choiceId: "1",
@@ -69,7 +69,7 @@ const chatData: ChatType = [
       id: "4",
       message: "Vous avez choisi :\nIndice : 1.5\nTraitement : UV Silver\n Veuillez saisir le nom complet du proteur",
       sender: false,
-      avatar: "https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w480-h960-rw",
+      avatar: "https://www.corporatephotographerslondon.com/wp-content/uploads/2021/07/LinkedIn_profile_photo_sample_1.jpg",
       choices: [
       ],
     },

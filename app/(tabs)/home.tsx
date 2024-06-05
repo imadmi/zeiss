@@ -44,8 +44,8 @@ const Home = () => {
             className="w-full h-full"
           />
         </View>
-        <SafeAreaView className="flex-1">
-          <View className="mt-9 ml-4">
+        <View className="flex-1 ">
+          <View className="mt-24 ml-4">
             <Text className="font-bold text-white text-[24px]">
               Dépasser les limites de
             </Text>
@@ -67,7 +67,7 @@ const Home = () => {
               </View>
             </View>
           </View>
-        </SafeAreaView>
+        </View>
       </ScrollView>
     </View>
   );

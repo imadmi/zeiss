@@ -22,45 +22,80 @@ import { Image } from "expo-image";
 const Chat = () => {
   const context = useAppContext();
 
+  useEffect(() => {
+    const currentMessage = context.prevMsgs[context.prevMsgs.length - 1];
+
+    if (
+      currentMessage?.choices.length === 0 &&
+      currentMessage?.sender === false
+    ) {
+      context.setInpuType("text");
+    } else if (context.inpuType === "text" && currentMessage?.sender === true) {
+      context.setInpuType("valid");
+    } else if (
+      currentMessage?.choices.length &&
+      currentMessage?.choices.length > 0
+    ) {
+      context.setInpuType("notValid");
+    }
+  }, [context.prevMsgs]);
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 relative bg-white"
+    <View
+      className={`flex-1 relative bg-white
+      ${Platform.OS === "ios" ? "mb-2" : "pb-20"}
+      `}
     >
       <Header />
       <ChatBubbel />
-      {/* {context.inpuType === "notValid" && <Validation />}
+      {context.inpuType === "notValid" && <Validation />}
       {context.inpuType === "valid" && <Text> valid </Text>}
-      {context.inpuType === "text" && <TextInputComp />} */}
+      {context.inpuType === "text" && <TextInputComp />}
+
       {/* <TextInputComp /> */}
       {/* <Validation /> */}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
 export default Chat;
 
-const TextInputComp = ({ addMessage, input, setInput }: any) => {
+const TextInputComp = () => {
   const context = useAppContext();
-  const [isFocused, setIsFocused] = useState(false);
+  const addMessage = () => {
+    const message: ChatMessageHistory = {
+      id: "1",
+      message: context.input,
+      sender: true,
+      avatar:
+        "https://www.fairtravel4u.org/wp-content/uploads/2018/06/sample-profile-pic.png",
+      choices: [],
+    };
+    context.setPrevMsgs(
+      // (prevMsgs : ChatMessageHistory[]) =>
+      [...context.prevMsgs, message]
+    );
+    context.setInput("");
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className={`w-full h-12 justify-center items-center z-10 ${
-        isFocused ? "bottom-2 mt-0" : "bottom-10 mt-10"
-      }`}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 30 : 0}
+      className={`w-full h-12 justify-center items-center z-10
+      ${context.isFocused ? "bottom-2 mt-0" : "bottom-10 mt-10"}
+      ${Platform.OS === "ios" ? " relative " : "absolute "}
+      `}
     >
       <View
-        className={`w-[95%] h-full flex-row justify-between items-center border-2 border-gray-400 
+        className={`w-[95%] h-12 flex-row justify-between items-center border-2 border-gray-400 
        rounded-full shadow-md m-3 px-4 bg-white`}
       >
         <TextInput
-          onChangeText={(text) => setInput(text)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          className={`max-w-[90%]`}
-          value={input}
+          onChangeText={(text) => context.setInput(text)}
+          onFocus={() => context.setIsFocused(true)}
+          onBlur={() => context.setIsFocused(false)}
+          className={`max-w-[90%] w-[90%] h-full`}
+          value={context.input}
           placeholder="Message"
           keyboardType="web-search"
         />
@@ -78,19 +113,20 @@ const TextInputComp = ({ addMessage, input, setInput }: any) => {
   );
 };
 
-const Validation = () => {
-  const [validation, setValidation] = React.useState(false);
-
+const Validation = ({valid} : { valid? : boolean}) => {
+  const context = useAppContext();
   return (
     <TouchableOpacity
       onPress={() => {
         console.log("clicked!");
       }}
-      className={`w-full h-12 bottom-10 justify-center items-center z-10`}
+      className={`w-full h-12 bottom-10 justify-center items-center z-10
+      ${Platform.OS === "ios" ? " relative " : "absolute "}
+      `}
     >
       <View
         className={`w-5/6 h-full flex-row justify-center items-center
-        ${validation ? "bg-[#0C192F]" : "bg-gray-400"} 
+        ${context.validation ? "bg-[#0C192F]" : "bg-gray-400"} 
         rounded-full shadow-md `}
       >
         <View>
@@ -164,13 +200,15 @@ const ChatMessage = ({
   choices,
   onChoiceSelected,
 }: any) => {
+  const context = useAppContext();
+
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 1000);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [isVisible]);
@@ -189,17 +227,16 @@ const ChatMessage = ({
         className={`m-4 mt-2 #flex-1 ${sender === false ? "pr-20 " : "pl-20"}`}
       >
         {isVisible && sender === false && (
-          <LottieView
-            autoPlay
-            style={{
-              width: 60,
-              height: 40,
-              backgroundColor: "#EBF0FF",
-              borderRadius: 12,
-              marginBottom: 8,
-            }}
-            source={require("../assets/icons/loadingC.json")}
-          />
+          <View className="rounded-xl bg-[#EBF0FF] my-2">
+            <LottieView
+              autoPlay
+              style={{
+                width: 60,
+                height: 40,
+              }}
+              source={require("../assets/icons/loadingC.json")}
+            />
+          </View>
         )}
 
         {!(isVisible && sender === false) && (
@@ -240,22 +277,24 @@ const ChatMessage = ({
 };
 
 import chatData from "./chatData";
-import { ChatHistoryType, ChatType, Choice } from "./chatTypes";
+import {
+  ChatHistoryType,
+  ChatMessageHistory,
+  ChatType,
+  Choice,
+} from "./chatTypes";
 import { useAppContext } from "@/context";
 import LottieView from "lottie-react-native";
 
 const ChatBubbel = () => {
-  const [currentMessageId, setCurrentMessageId] = useState("1");
-  const currentMessage = chatData.find((msg) => msg.id === currentMessageId);
+  const context = useAppContext();
+
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const [prevMsgs, setPrevMsgs] = useState<ChatHistoryType>([]);
-  const [choice, setchoice] = useState<Choice | null>(null);
-  const [prevMsgsWithoutLastItem, setPrevMsgsWithoutLastItem] =
-    useState<ChatHistoryType>([]);
-
   useEffect(() => {
-    const newMessage = chatData.find((msg) => msg.id === currentMessageId);
+    const newMessage = chatData.find(
+      (msg) => msg.id === context.currentMessageId
+    );
     if (newMessage) {
       const newMessageWithClick = {
         ...newMessage,
@@ -267,13 +306,13 @@ const ChatBubbel = () => {
         }),
       };
 
-      const lastObject = prevMsgs[prevMsgs.length - 1];
+      const lastObject = context.prevMsgs[context.prevMsgs.length - 1];
 
       if (lastObject) {
-        const lastObjectWithClick = {
+        const lastObjectWithClick: ChatMessageHistory = {
           ...lastObject,
           choices: lastObject.choices.map((choix) => {
-            if (choice && choix.choiceId === choice.choiceId) {
+            if (context.choice && choix.choiceId === context.choice.choiceId) {
               return { ...choix, clicked: true };
             } else {
               return { ...choix, clicked: false };
@@ -281,57 +320,28 @@ const ChatBubbel = () => {
           }),
         };
 
-        setPrevMsgs((prevMsgs) => [
-          ...prevMsgs.slice(0, -1),
-          lastObjectWithClick,
-        ]);
-
         // console.log("newMessage :\n");
         // console.log(JSON.stringify(lastObjectWithClick, undefined, 2));
 
-        setPrevMsgs((prevMsgs) => [...prevMsgs, newMessageWithClick]);
-        // setPrevMsgsWithoutLastItem((prevMsgs) => prevMsgs.slice(0, -1));
-        // setPrevMsgsWithoutLastItem((prevMsgs) => prevMsgs.slice(0,prevMsgs.length ));
+        context.setPrevMsgs([
+          ...context.prevMsgs.slice(0, -1),
+          lastObjectWithClick,
+          newMessageWithClick,
+        ]);
       } else {
-        setPrevMsgs((prevMsgs) => [...prevMsgs, newMessageWithClick]);
+        context.setPrevMsgs([...context.prevMsgs, newMessageWithClick]);
       }
     }
-  }, [currentMessageId, choice]);
+  }, [context.currentMessageId, context.choice]);
 
   useEffect(() => {
-    // setPrevMsgsWithoutLastItem([...prevMsgs.slice(0, prevMsgs.length - 1)]);
-    setPrevMsgsWithoutLastItem([...prevMsgs.slice(0, prevMsgs.length)]);
-  }, [prevMsgs]);
+    context.setPrevMsgsWithoutLastItem([...context.prevMsgs]);
+  }, [context.prevMsgs]);
 
   const handleChoiceSelected = (choice: any) => {
-    setchoice(choice);
-    setCurrentMessageId(choice.next_msg_id);
+    context.setchoice(choice);
+    context.setCurrentMessageId(choice.next_msg_id);
   };
-
-  const [input, setInput] = useState("");
-
-  const addMessage = () => {
-    const message = {
-      id: "1",
-      message: input,
-      sender: true,
-      avatar:
-        "https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w480-h960-rw",
-      choices: [],
-    };
-    setPrevMsgs((prevMsgs) => [...prevMsgs, message]);
-    setInput("");
-  };
-
-  const context = useAppContext();
-
-  // useEffect(() => {
-  //   if (currentMessage?.choices.length === 0) {
-  //     context.setInpuType("text");
-  //   } else {
-  //     context.setInpuType("notValid");
-  //   }
-  // }, [currentMessage]);
 
   return (
     <>
@@ -341,10 +351,10 @@ const ChatBubbel = () => {
           scrollViewRef.current?.scrollToEnd({ animated: true })
         }
       >
-        {prevMsgsWithoutLastItem.map((msg, index) => (
+        {context.prevMsgsWithoutLastItem.map((msg, index) => (
           <ChatMessage
             key={index}
-            isLastitem={index === prevMsgsWithoutLastItem.length - 1}
+            isLastitem={index === context.prevMsgsWithoutLastItem.length - 1}
             history={true}
             sender={msg.sender}
             message={msg.message}
@@ -353,22 +363,7 @@ const ChatBubbel = () => {
             onChoiceSelected={handleChoiceSelected}
           />
         ))}
-
-        {/* {currentMessage && (
-        <ChatMessage
-        history={false}
-        message={currentMessage.message}
-        avatar={currentMessage.avatar}
-        choices={currentMessage.choices}
-        onChoiceSelected={handleChoiceSelected}
-        />
-      )} */}
       </ScrollView>
-      <TextInputComp
-        addMessage={addMessage}
-        input={input}
-        setInput={setInput}
-      />
     </>
   );
 };

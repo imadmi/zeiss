@@ -1,6 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
-import { Animated, Text, View } from "react-native";
+import { Animated, Platform, View } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
 
@@ -9,9 +9,11 @@ export default function TabLayout() {
     <Tabs
       initialRouteName="home"
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         tabBarInactiveTintColor: "#A0A0A0",
         tabBarActiveTintColor: "#FFFFFF",
         tabBarStyle: {
+          display: "flex",
           backgroundColor: "#0C192F",
           marginBottom: 50,
           height: 50,
@@ -23,6 +25,7 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         headerShown: false,
       }}
+
     >
       <Tabs.Screen
         name="index"
@@ -35,7 +38,11 @@ export default function TabLayout() {
         options={{
           title: "history",
           tabBarIcon: ({ color }) => (
-            <View className="h-[60px] translate-y-[13px] justify-center">
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+              } justify-center`}
+            >
               <Image
                 source={require("../../assets/icons/history.png")}
                 placeholder="history"
@@ -53,7 +60,11 @@ export default function TabLayout() {
         options={{
           title: "tags",
           tabBarIcon: ({ color }) => (
-            <View className="h-[60px] translate-y-[13px] justify-center">
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+              }  justify-center`}
+            >
               <Image
                 source={require("../../assets/icons/index.png")}
                 placeholder="history"
@@ -69,9 +80,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
+          tabBarHideOnKeyboard: true,
           title: "home",
           tabBarIcon: ({ color, focused }) => (
-            <View className="h-[60px] translate-y-[13px] justify-center">
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+              }  justify-center`}
+            >
               <Image
                 source={require("../../assets/icons/home.png")}
                 placeholder="history"
@@ -90,7 +106,11 @@ export default function TabLayout() {
         options={{
           title: "items",
           tabBarIcon: ({ color }) => (
-            <View className="h-[60px] translate-y-[13px] justify-center">
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+              }  justify-center`}
+            >
               <Image
                 source={require("../../assets/icons/items.png")}
                 placeholder="history"
@@ -108,7 +128,11 @@ export default function TabLayout() {
         options={{
           title: "settings",
           tabBarIcon: ({ color }) => (
-            <View className="h-[60px] translate-y-[13px] justify-center">
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+              }  justify-center`}
+            >
               <FontAwesome name="gear" size={24} color={color} />
             </View>
           ),
