@@ -6,8 +6,6 @@ type AppContextProps = {
   setInpuType: (input: "valid" | "notValid" | "text") => void;
   isFocused: boolean;
   setIsFocused: (input: boolean) => void;
-  validation: boolean;
-  setValidation: (input: boolean) => void;
   currentMessageId: string;
   setCurrentMessageId: (input: string) => void;
   prevMsgs: ChatHistoryType;
@@ -27,7 +25,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     "notValid"
   );
   const [isFocused, setIsFocused] = useState(false);
-  const [validation, setValidation] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState("1");
   const [prevMsgs, setPrevMsgs] = useState<ChatHistoryType>([]);
   const [choice, setchoice] = useState<Choice | null>(null);
@@ -40,8 +37,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setInpuType,
     isFocused,
     setIsFocused,
-    validation,
-    setValidation,
     currentMessageId,
     setCurrentMessageId,
     prevMsgs,

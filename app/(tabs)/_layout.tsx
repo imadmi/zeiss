@@ -1,10 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
-import { Animated, Platform, View } from "react-native";
+import { Animated, Dimensions, Platform, View } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
 
 export default function TabLayout() {
+  const { width, height } = Dimensions.get("window");
   return (
     <Tabs
       initialRouteName="home"
@@ -40,7 +41,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               } justify-center`}
             >
               <Image
@@ -62,7 +63,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               }  justify-center`}
             >
               <Image
@@ -85,7 +86,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               }  justify-center`}
             >
               <Image
@@ -108,7 +109,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               }  justify-center`}
             >
               <Image
@@ -130,7 +131,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               }  justify-center`}
             >
               <FontAwesome name="gear" size={24} color={color} />

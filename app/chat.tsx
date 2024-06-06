@@ -11,13 +11,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Button,
+  Dimensions,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Image } from "expo-image";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { BlurView } from "expo-blur";
 
 const Chat = () => {
   const context = useAppContext();
@@ -39,25 +43,132 @@ const Chat = () => {
       context.setInpuType("notValid");
     }
   }, [context.prevMsgs]);
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const bottomSheetRef = useRef<any>(null);
+
+  const openBottomSheet = () => {
+    setIsSheetOpen(true);
+    bottomSheetRef.current?.expand();
+  };
+
   return (
-    <View
-      className={`flex-1 relative bg-white
+    <GestureHandlerRootView>
+      <View
+        className={`flex-1 relative bg-white
       ${Platform.OS === "ios" ? "mb-2" : "pb-20"}
       `}
-    >
-      <Header />
-      <ChatBubbel />
-      {context.inpuType === "notValid" && <Validation />}
-      {context.inpuType === "valid" && <Text> valid </Text>}
-      {context.inpuType === "text" && <TextInputComp />}
+      >
+        <Header />
+        <ChatBubbel />
+        {context.inpuType === "notValid" && <Validation />}
+        {context.inpuType === "valid" && (
+          <Validation valid openBottomSheet={openBottomSheet} />
+        )}
+        {context.inpuType === "text" && <TextInputComp />}
 
-      {/* <TextInputComp /> */}
-      {/* <Validation /> */}
-    </View>
+        <Modal
+          bottomSheetRef={bottomSheetRef}
+          // openBottomSheet={openBottomSheet
+          isSheetOpen={isSheetOpen}
+          setIsSheetOpen={setIsSheetOpen}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 };
 
 export default Chat;
+
+const Modal = ({ bottomSheetRef, isSheetOpen, setIsSheetOpen }: any) => {
+  const snapPoints = useMemo(() => ["50%", "60%"], []);
+
+  const closeBottomSheet = () => {
+    setIsSheetOpen(false);
+    bottomSheetRef.current?.close();
+  };
+
+  useEffect(() => {
+    closeBottomSheet();
+  }, []);
+
+  const screenHeight = Dimensions.get("window").height;
+  const calculatedIconSize = screenHeight * (6 / 100);
+  return (
+    <>
+      {isSheetOpen && (
+        <>
+          <BlurView
+            intensity={10}
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              backgroundColor: "rgba(0,50,150,0.5)",
+            }}
+          />
+          <BottomSheet
+            ref={bottomSheetRef}
+            // onClose={() => setIsSheetOpen(false)}
+            snapPoints={snapPoints}
+            index={0}
+            style={{ zIndex: 20, elevation: 20 }}
+            handleStyle={{
+              display: "none",
+            }}
+          >
+            <View className="flex-1">
+              <View className="w-full h-[40%] bg-[#0C192F] rounded-t-xl items-center">
+                <View className="mt-[4%] items-center">
+                  <Ionicons
+                    name="checkmark-done-sharp"
+                    size={calculatedIconSize}
+                    color="white"
+                  />
+                  <View className="w-[70%] mt-[4%]">
+                    <Text className="text-white text-xl text-center">
+                      Nous avons bien reçu votre commande
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View className="flex-1 py-4 px-6 ">
+                <Text className="text-lg">Commande N°</Text>
+                <Text className="text-2xl font-semibold">234/77494</Text>
+                <View className="items-center">
+                  <TouchableOpacity
+                    onPress={closeBottomSheet}
+                    className="w-[90%] mt-[7%] bg-[#0C192F] flex-row justify-center p-3 
+                rounded-full space-x-4 items-center"
+                  >
+                    <Text className="text-white text-center text-lg">
+                      Nouvelle commande ?
+                    </Text>
+                    <SimpleLineIcons name="refresh" size={20} color="white" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      router.back();
+                    }}
+                    className="w-[90%] mt-[4%] border border-[#0C192F] flex-row p-[10px] 
+              rounded-full space-x-4 items-center justify-center"
+                  >
+                    <Text className="text-[#0C192F] text-center text-lg">
+                      Accéder à l’accueil
+                    </Text>
+                    <MaterialCommunityIcons
+                      name="home"
+                      size={26}
+                      color="#0C192F"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </BottomSheet>
+        </>
+      )}
+    </>
+  );
+};
 
 const TextInputComp = () => {
   const context = useAppContext();
@@ -70,10 +181,7 @@ const TextInputComp = () => {
         "https://www.fairtravel4u.org/wp-content/uploads/2018/06/sample-profile-pic.png",
       choices: [],
     };
-    context.setPrevMsgs(
-      // (prevMsgs : ChatMessageHistory[]) =>
-      [...context.prevMsgs, message]
-    );
+    context.setPrevMsgs([...context.prevMsgs, message]);
     context.setInput("");
   };
 
@@ -81,8 +189,8 @@ const TextInputComp = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 30 : 0}
-      className={`w-full h-12 justify-center items-center z-10
-      ${context.isFocused ? "bottom-2 mt-0" : "bottom-10 mt-10"}
+      className={`w-full h-12 justify-center items-center #z-10
+      ${context.isFocused ? "bottom-2 mt-6" : "bottom-10 mt-10"}
       ${Platform.OS === "ios" ? " relative " : "absolute "}
       `}
     >
@@ -113,20 +221,30 @@ const TextInputComp = () => {
   );
 };
 
-const Validation = ({valid} : { valid? : boolean}) => {
-  const context = useAppContext();
+const Validation = ({
+  valid,
+  openBottomSheet,
+}: {
+  valid?: boolean;
+  openBottomSheet?: () => void;
+}) => {
+  const handleClick = () => {
+    if (valid) {
+      openBottomSheet && openBottomSheet();
+    } else {
+      console.log("not valid");
+    }
+  };
   return (
     <TouchableOpacity
-      onPress={() => {
-        console.log("clicked!");
-      }}
-      className={`w-full h-12 bottom-10 justify-center items-center z-10
+      onPress={handleClick}
+      className={`w-full h-12 bottom-10 justify-center items-center #z-10
       ${Platform.OS === "ios" ? " relative " : "absolute "}
       `}
     >
       <View
         className={`w-5/6 h-full flex-row justify-center items-center
-        ${context.validation ? "bg-[#0C192F]" : "bg-gray-400"} 
+        ${valid ? "bg-[#0C192F]" : "bg-gray-400"} 
         rounded-full shadow-md `}
       >
         <View>
@@ -172,7 +290,7 @@ const Header = () => {
       </View>
       <View
         className="absolute top-14 left-0 items-center justify-between
-       flex-row px-4 h-12 w-full"
+        flex-row px-4 h-12 w-full"
       >
         <TouchableOpacity
           onPress={() => {
@@ -285,6 +403,8 @@ import {
 } from "./chatTypes";
 import { useAppContext } from "@/context";
 import LottieView from "lottie-react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 const ChatBubbel = () => {
   const context = useAppContext();
@@ -350,6 +470,7 @@ const ChatBubbel = () => {
         onContentSizeChange={() =>
           scrollViewRef.current?.scrollToEnd({ animated: true })
         }
+        // className={`mb-6`}
       >
         {context.prevMsgsWithoutLastItem.map((msg, index) => (
           <ChatMessage
