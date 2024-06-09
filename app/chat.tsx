@@ -12,6 +12,8 @@ import {
   Keyboard,
   Button,
   Dimensions,
+  UIManager,
+  LayoutAnimation,
 } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -52,24 +54,30 @@ const Chat = () => {
     bottomSheetRef.current?.expand();
   };
 
+  const height = Dimensions.get("window").height - 112;
   return (
     <GestureHandlerRootView>
       <View
         className={`flex-1 relative bg-white
-      ${Platform.OS === "ios" ? "mb-2" : "pb-20"}
+       ${Platform.OS === "ios" ? "#pb-2" : "#pb-20"}
       `}
       >
         <Header />
-        <ChatBubbel />
-        {context.inpuType === "notValid" && <Validation />}
-        {context.inpuType === "valid" && (
-          <Validation valid openBottomSheet={openBottomSheet} />
-        )}
-        {context.inpuType === "text" && <TextInputComp />}
+        <View
+          className={`
+          ${Platform.OS === "ios" ? "flex-1 justify-end" : "flex-1 justify-end"}
+          `}
+        >
+          <ChatBubbel />
+          {context.inpuType === "notValid" && <Validation />}
+          {context.inpuType === "valid" && (
+            <Validation valid openBottomSheet={openBottomSheet} />
+          )}
+          {context.inpuType === "text" && <TextInputComp />}
+        </View>
 
         <Modal
           bottomSheetRef={bottomSheetRef}
-          // openBottomSheet={openBottomSheet
           isSheetOpen={isSheetOpen}
           setIsSheetOpen={setIsSheetOpen}
         />
@@ -185,18 +193,48 @@ const TextInputComp = () => {
     context.setInput("");
   };
 
+  // useEffect(() => {
+  //   if (Platform.OS === "android") {
+  //     UIManager.setLayoutAnimationEnabledExperimental &&
+  //       UIManager.setLayoutAnimationEnabledExperimental(true);
+  //   }
+
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     "keyboardDidShow",
+  //     () => {
+  //       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  //       console.log("keyboardDidShow");
+  //       context.setIsFocused(true);
+  //     }
+  //   );
+
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     "keyboardDidHide",
+  //     () => {
+  //       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  //       console.log("keyboardDidHide");
+  //       context.setIsFocused(false);
+  //     }
+  //   );
+
+  //   return () => {
+  //     keyboardDidHideListener.remove();
+  //     keyboardDidShowListener.remove();
+  //   };
+  // }, []);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 30 : 0}
-      className={`w-full h-12 justify-center items-center #z-10
-      ${context.isFocused ? "bottom-2 mt-6" : "bottom-10 mt-10"}
-      ${Platform.OS === "ios" ? " relative " : "absolute "}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 140 : 0}
+      className={`w-full h-12 justify-center items-center
+      ${context.isFocused ? "" : "mb-12"}
       `}
     >
       <View
         className={`w-[95%] h-12 flex-row justify-between items-center border-2 border-gray-400 
-       rounded-full shadow-md m-3 px-4 bg-white`}
+       rounded-full shadow-md mx-3 px-4 bg-white 
+       `}
       >
         <TextInput
           onChangeText={(text) => context.setInput(text)}
@@ -238,9 +276,9 @@ const Validation = ({
   return (
     <TouchableOpacity
       onPress={handleClick}
-      className={`w-full h-12 bottom-10 justify-center items-center #z-10
-      ${Platform.OS === "ios" ? " relative " : "absolute "}
-      `}
+      className={`w-full h-12 bottom-10 justify-center items-center mt-10
+        `}
+        // ${Platform.OS === "ios" ? " relative " : "absolute "}
     >
       <View
         className={`w-5/6 h-full flex-row justify-center items-center
@@ -404,7 +442,6 @@ import {
 import { useAppContext } from "@/context";
 import LottieView from "lottie-react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 const ChatBubbel = () => {
   const context = useAppContext();
@@ -470,7 +507,7 @@ const ChatBubbel = () => {
         onContentSizeChange={() =>
           scrollViewRef.current?.scrollToEnd({ animated: true })
         }
-        // className={`mb-6`}
+        className={`pb-6`}
       >
         {context.prevMsgsWithoutLastItem.map((msg, index) => (
           <ChatMessage
