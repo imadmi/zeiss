@@ -2,6 +2,12 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+
+
+https://github.com/imadmi/zeiss/assets/81130422/441c7f4e-6283-4edb-9c86-583b6366be93
+
+
+
 ## Get started
 
 1. Install dependencies
