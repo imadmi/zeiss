@@ -1,8 +1,4 @@
-import {
-  View,
-  Platform,
-  Dimensions,
-} from "react-native";
+import { View, Platform } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useAppContext } from "@/context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -11,7 +7,6 @@ import TextInputComp from "@/components/TextInputComp";
 import Validation from "@/components/Validation";
 import Header from "@/components/Header";
 import ChatBubbel from "@/components/ChatBubbel";
-
 
 const Chat = () => {
   const context = useAppContext();
@@ -44,9 +39,7 @@ const Chat = () => {
 
   return (
     <GestureHandlerRootView>
-      <View
-        className={`flex-1 relative bg-white`}
-      >
+      <View className={`flex-1 relative bg-white`}>
         <Header />
         <View
           className={`
@@ -72,4 +65,3 @@ const Chat = () => {
 };
 
 export default Chat;
-

@@ -1,8 +1,8 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { Animated, Dimensions, Platform, View } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function TabLayout() {
   const { width, height } = Dimensions.get("window");
@@ -56,28 +56,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="tags"
-        options={{
-          title: "tags",
-          tabBarIcon: ({ color }) => (
-            <View
-              className={`h-[60px] ${
-                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
-              }  justify-center`}
-            >
-              <Image
-                source={require("../../assets/icons/index.png")}
-                placeholder="history"
-                contentFit="cover"
-                transition={1000}
-                className={`w-[24px] h-[24px]`}
-                style={{ tintColor: color }}
-              />
-            </View>
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="home"
         options={{
@@ -102,39 +81,18 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
-        name="items"
+        name="User"
         options={{
-          title: "items",
+          title: "User",
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
                 Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
               }  justify-center`}
             >
-              <Image
-                source={require("../../assets/icons/items.png")}
-                placeholder="history"
-                contentFit="cover"
-                transition={1000}
-                className={`w-[24px] h-[24px]`}
-                style={{ tintColor: color }}
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "settings",
-          tabBarIcon: ({ color }) => (
-            <View
-              className={`h-[60px] ${
-                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
-              }  justify-center`}
-            >
-              <FontAwesome name="gear" size={24} color={color} />
+              <FontAwesome5 name="user-circle" size={24} color={color} />
             </View>
           ),
         }}

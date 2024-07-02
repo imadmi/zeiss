@@ -61,11 +61,9 @@ const Home = () => {
               <View className="">
                 <Commande />
                 <Commande />
-                <Commande />
-                <Commande />
-                <Commande />
               </View>
             </View>
+            <NewComponent />
           </View>
         </View>
       </ScrollView>
@@ -74,6 +72,22 @@ const Home = () => {
 };
 
 export default Home;
+
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+const NewComponent = () => {
+  return (
+    <View className="mt-6 mx-4 shadow-sm flex-row justify-end">
+      <TouchableOpacity
+        onPress={() => {
+          router.push("/chat");
+        }}
+      >
+        <Ionicons name="add-circle" size={80} color="rgb(59 130 246)" />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const Commande = () => {
   return (
