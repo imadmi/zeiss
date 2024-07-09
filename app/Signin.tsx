@@ -17,6 +17,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { useAppContext } from "@/context";
 
 if (
   Platform.OS === "android" &&
@@ -27,6 +28,7 @@ if (
 
 const Signin = () => {
   const windowHeight = Dimensions.get("window").height;
+  const context = useAppContext();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [issecurepass, setIssecurepass] = useState(false);
   const [email, setemail] = useState("");
@@ -75,16 +77,24 @@ const Signin = () => {
         }
       );
 
+      // imad@gmail.com imad@gmail.com
+      // m@gmail.com mmmmmmmm
+
       const res = await result.json();
       console.log(JSON.stringify(res, null, 2)); //
-      seterror(res.message.split(".")[0]);
+      if (res.message) {
+        seterror(res.message.split(".")[0]);
+      }
       if (res.success === true) {
         router.push("(tabs)/home");
+        context.isLoggedIn(true);
+        context.setAccessToken(res.access_token);
+        context.storeAccessToken(res.access_token);
         seterror("");
         return;
       }
     } catch (error: any) {
-      seterror(error.message.split(".")[0]);
+      if (error.message) seterror(error.message.split(".")[0]);
     }
   };
 

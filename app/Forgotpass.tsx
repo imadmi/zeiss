@@ -18,6 +18,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppContext } from "@/context";
 
 if (
   Platform.OS === "android" &&
@@ -28,6 +29,7 @@ if (
 
 const Signin = () => {
   const { t } = useTranslation();
+  const context = useAppContext();
   const windowHeight = Dimensions.get("window").height;
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [issecurepassold, setIssecurepassold] = useState(false);
@@ -54,12 +56,14 @@ const Signin = () => {
       keyboardDidShowListener.remove();
     };
   }, []);
+  const accessToken = context.accessToken;
 
   const signin = async () => {
     try {
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
       };
 
       let body = {

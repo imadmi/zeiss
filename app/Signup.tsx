@@ -10,7 +10,7 @@ import {
   UIManager,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { Dimensions } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,9 @@ import Feather from "@expo/vector-icons/Feather";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SelectList } from "react-native-dropdown-select-list";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useAppContext } from "@/context";
 
 if (
   Platform.OS === "android" &&
@@ -28,7 +31,10 @@ if (
 }
 
 const Signup = () => {
+  const context = useAppContext();
   const windowHeight = Dimensions.get("window").height;
+  const windowWidth = Dimensions.get("window").width;
+
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [issecurepass, setIssecurepass] = useState(false);
   const [email, setemail] = useState("");
@@ -86,6 +92,27 @@ const Signup = () => {
 
       const res = await result.json();
       console.log(JSON.stringify(res, null, 2)); //
+
+      // {
+      //   "success": true,
+      //   "access_token": "118|NABGATx9XuMHYh8IuGEisUobjKbztzwXtDEaruHPjuq1kLIJAmDxXNh9Oy4BmPmQKiRYfAK6vl97y53tcDLerOliG5NbcMzRy8WVPJcrJiKlguo49qbcD2Y0M2bHeFTzSFJcGoTePd7AMaZxvzB4WKgW9igY1ok8PW6UkDlXwZ0tEz9VUCohIUVWCTbRhum4joI1eronTpl6AKYI5ljmZ0DBfi1QVdW5lqnRBUGeJrlUp7L2",
+      //   "user": {
+      //     "tel": null,
+      //     "fname": "immmm",
+      //     "lname": "immmmm",
+      //     "email": "m@gmail.com",
+      //     "magasin": "gggg",
+      //     "city_id": 1,
+      //     "city_name": "Meknes",
+      //     "user_uuid": "95522d02-d309-4a5f-9e21-4eb6af69819a",
+      //     "address": null,
+      //     "valide": false,
+      //     "blocked": false,
+      //     "latitude": null,
+      //     "longitude": null
+      //   }
+      // }
+
       seterror(res.message);
 
       if (res.success === false) {
@@ -93,6 +120,9 @@ const Signup = () => {
       }
       if (res.success === true) {
         router.push("(tabs)/home");
+        context.isLoggedIn(true);
+        context.setAccessToken(res.access_token);
+        context.storeAccessToken(res.access_token);
         seterror("");
         return;
       }
@@ -100,6 +130,39 @@ const Signup = () => {
       seterror(error.message);
     }
   };
+
+  const [selected, setSelected] = React.useState(false);
+
+  const data = [
+    {
+      key: 1,
+      value: "Meknes",
+    },
+    {
+      key: 2,
+      value: "Casablanca",
+    },
+    {
+      key: 3,
+      value: "Fes",
+    },
+    {
+      key: 4,
+      value: "Rabat",
+    },
+    {
+      key: 5,
+      value: "Oujda",
+    },
+    {
+      key: 7,
+      value: "Kenitra",
+    },
+    {
+      key: 8,
+      value: "Tanger",
+    },
+  ];
 
   return (
     <View className="flex-1">
@@ -127,7 +190,7 @@ const Signup = () => {
         </Text>
 
         <View className="w-full items-center">
-          <View className="mt-[40%] w-full items-center h-[56%]">
+          <View className="mt-[40%] w-full items-center h-[50%]">
             <ScrollView className="flex-1 w-[80%]">
               <View className="pb-2 border-b border-[#007AFF] flex-row">
                 <Feather name="user" size={21} color="#007AFF" />
@@ -169,14 +232,47 @@ const Signup = () => {
                   onChangeText={(magasin) => setmagasin(magasin)}
                 />
               </View>
-              <View className="mt-6 pb-2 border-b border-[#007AFF] flex-row">
-                <MaterialCommunityIcons name="city" size={24} color="#007AFF" />
-                <TextInput
+              <View className="mt-4 border-b border-[#007AFF] flex-row ">
+                <MaterialCommunityIcons
+                  name="city"
+                  size={24}
+                  color="#007AFF"
+                  style={{ marginTop: 10 }}
+                />
+
+                <SelectList
                   placeholder={t("signup.cityPlaceholder")}
-                  keyboardType="default"
-                  autoCapitalize="none"
-                  className="ml-3 text-[#007AFF] w-full"
-                  onChangeText={(city) => setcity_id(city)}
+                  setSelected={(val: string) => {
+                    setSelected(true);
+                    setcity_id(val);
+                  }}
+                  data={data}
+                  boxStyles={{
+                    borderRadius: 0,
+                    borderBottomWidth: 0,
+                    borderBlockColor: "#007AFF",
+                    borderTopWidth: 0,
+                    borderRightWidth: 0,
+                    borderLeftWidth: 0,
+                    width: "100%",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                  dropdownStyles={{
+                    width: windowWidth * 0.7,
+                    flexGrow: 1,
+                    borderRadius: 8,
+                    borderColor: "#007AFF",
+                  }}
+                  dropdownTextStyles={{
+                    color: "#007AFF",
+                    width: "100%",
+                  }}
+                  inputStyles={{
+                    color: selected ? "#007AFF" : "#b3b3b3",
+                    fontSize: 15,
+                    transform: [{ translateX: -8 }],
+                  }}
                 />
               </View>
               <View className="mt-6 pb-2 border-b border-[#007AFF] flex-row justify-between">
@@ -208,6 +304,16 @@ const Signup = () => {
               </View>
             </ScrollView>
           </View>
+          {error !== "" && (
+              <View className="w-[80%] mt-2 flex-row items-center">
+                <MaterialIcons
+                  name="report-gmailerrorred"
+                  size={22}
+                  color="rgb(248 113 113)"
+                />
+                <Text className="text-red-400 ml-1">{error}</Text>
+              </View>
+            )}
         </View>
 
         {(!isKeyboardVisible || Platform.OS === "ios") && (
