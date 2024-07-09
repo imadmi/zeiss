@@ -9,14 +9,15 @@ import {
   TextInput,
   Keyboard,
   UIManager,
-  Dimensions,
 } from "react-native";
 import { Image } from "expo-image";
+import { Dimensions } from "react-native";
+import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
 
 if (
   Platform.OS === "android" &&
@@ -26,14 +27,14 @@ if (
 }
 
 const Signin = () => {
+  const { t } = useTranslation();
   const windowHeight = Dimensions.get("window").height;
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [issecurepass, setIssecurepass] = useState(false);
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [issecurepassold, setIssecurepassold] = useState(false);
+  const [issecurepassnew, setIssecurepassnew] = useState(false);
+  const [old_password, setold_password] = useState("");
+  const [new_password, setnew_password] = useState("");
   const [error, seterror] = useState("");
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -62,12 +63,12 @@ const Signin = () => {
       };
 
       let body = {
-        email: email,
-        password: password,
+        new_password: new_password,
+        old_password: old_password,
       };
 
       const result = await fetch(
-        `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/login`,
+        `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/change-password`,
         {
           method: "POST",
           headers,
@@ -96,13 +97,24 @@ const Signin = () => {
         contentFit="fill"
         className={`absolute top-0 left-0 w-full h-full 
           ${!isKeyboardVisible ? "-translate-y-52 " : ""} 
-          ${
-            isKeyboardVisible && Platform.OS !== "ios" ? "-translate-y-44" : ""
-          } 
-          ${
-            isKeyboardVisible && Platform.OS === "ios" ? "-translate-y-72 " : ""
-          }`}
+              ${
+                isKeyboardVisible && Platform.OS !== "ios"
+                  ? "-translate-y-44"
+                  : ""
+              } 
+              ${
+                isKeyboardVisible && Platform.OS === "ios"
+                  ? "-translate-y-72 "
+                  : ""
+              }         `}
       />
+      <TouchableOpacity
+        onPress={() => router.back()}
+        className="absolute top-16 left-5 z-10"
+        accessibilityLabel={t("signIn.backButton")}
+      >
+        <Ionicons name="arrow-back" size={30} color="white" />
+      </TouchableOpacity>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 140 : 0}
@@ -111,47 +123,64 @@ const Signin = () => {
         }  items-center`}
       >
         <Text className="text-white text-4xl font-bold">
-          {t("signin.sign_in")}
+          {t("signIn.changePassword")}
         </Text>
 
         <View className="w-full items-center">
           <View className="mt-[50%] w-full items-center">
-            <View className="pb-2 border-b border-[#007AFF] w-[80%] flex-row">
-              <Feather name="mail" size={20} color="#007AFF" />
-              <TextInput
-                placeholder={t("signin.email_placeholder")}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                className="ml-3 text-[#007AFF] w-full"
-                value={email}
-                onChangeText={(email) => setemail(email)}
-              />
-            </View>
             <View className="mt-6 pb-2 border-b border-[#007AFF] w-[80%] flex-row justify-between">
               <View className="flex-row justify-start">
                 <AntDesign name="lock" size={24} color="#007AFF" />
                 <TextInput
-                  placeholder={t("signin.password_placeholder")}
-                  secureTextEntry={!issecurepass}
+                  placeholder={t("signIn.oldPasswordPlaceholder")}
+                  secureTextEntry={!issecurepassold}
                   autoCapitalize="none"
                   className="ml-[10px] text-[#007AFF] w-[80%]"
-                  value={password}
-                  onChangeText={(password) => setpassword(password)}
+                  value={old_password}
+                  onChangeText={(old_password) => setold_password(old_password)}
                 />
               </View>
-              {issecurepass ? (
+              {issecurepassold ? (
                 <Feather
                   name="eye"
                   size={20}
                   color="#007AFF"
-                  onPress={() => setIssecurepass(!issecurepass)}
+                  onPress={() => setIssecurepassold(!issecurepassold)}
                 />
               ) : (
                 <Feather
                   name="eye-off"
                   size={20}
                   color="#007AFF"
-                  onPress={() => setIssecurepass(!issecurepass)}
+                  onPress={() => setIssecurepassold(!issecurepassold)}
+                />
+              )}
+            </View>
+            <View className="mt-6 pb-2 border-b border-[#007AFF] w-[80%] flex-row justify-between">
+              <View className="flex-row justify-start">
+                <AntDesign name="lock" size={24} color="#007AFF" />
+                <TextInput
+                  placeholder={t("signIn.newPasswordPlaceholder")}
+                  secureTextEntry={!issecurepassnew}
+                  autoCapitalize="none"
+                  className="ml-[10px] text-[#007AFF] w-[80%]"
+                  value={new_password}
+                  onChangeText={(new_password) => setnew_password(new_password)}
+                />
+              </View>
+              {issecurepassnew ? (
+                <Feather
+                  name="eye"
+                  size={20}
+                  color="#007AFF"
+                  onPress={() => setIssecurepassnew(!issecurepassnew)}
+                />
+              ) : (
+                <Feather
+                  name="eye-off"
+                  size={20}
+                  color="#007AFF"
+                  onPress={() => setIssecurepassnew(!issecurepassnew)}
                 />
               )}
             </View>
@@ -161,48 +190,28 @@ const Signin = () => {
                   name="report-gmailerrorred"
                   size={22}
                   color="rgb(248 113 113)"
+                  accessibilityLabel={t("signIn.errorIconDescription")}
                 />
                 <Text className="text-red-400 ml-1">{error}</Text>
               </View>
             )}
-            <TouchableOpacity
-              onPress={() => router.push("Forgotpass")}
-              className="w-[80%] mt-6 items-end"
-            >
-              <Text className="text-[#007AFF]  ml-1">
-                {t("signin.forgot_password")}
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
         {(!isKeyboardVisible || Platform.OS === "ios") && (
-          <>
-            <TouchableOpacity
-              onPress={() => {
-                signin();
-              }}
-              className="absolute bottom-[20%] w-[80%] bg-[#007AFF] 
-          rounded-full py-3"
+          <TouchableOpacity
+            onPress={() => {
+              signin();
+            }}
+            className="absolute bottom-[20%] w-[80%] bg-[#007AFF] 
+              rounded-full py-3"
+          >
+            <Text
+              className="text-white text-2xl font-semibold
+              text-center"
             >
-              <Text
-                className="text-white text-2xl font-semibold
-          text-center"
-              >
-                {t("signin.sign_in_button")}
-              </Text>
-            </TouchableOpacity>
-
-            <View className="absolute bottom-[10%] w-[80%] flex-row justify-center">
-              <Text className="text-gray-500 text-center text-md">
-                {t("signin.no_account")}
-              </Text>
-              <TouchableOpacity onPress={() => router.push("Signup")}>
-                <Text className="text-[#007AFF] text-center text-md ml-2 font-semibold">
-                  {t("signin.sign_up")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
+              {t("signIn.applyButton")}
+            </Text>
+          </TouchableOpacity>
         )}
       </KeyboardAvoidingView>
     </View>

@@ -12,16 +12,19 @@ const Home = () => {
       <Image
         source={require("../assets/icons/homebackground.png")}
         contentFit="fill"
-        className="w-full h-full -translate-y-36"
+        className="w-full h-full -translate-y-44"
       />
       <View
         className={`absolute top-0 left-0 h-full w-full ${
-          windowHeight > 700 ? "pt-[60%]" : "pt-[40%]"
+          windowHeight > 700 ? "pt-[50%]" : "pt-[40%]"
         }  items-center`}
       >
         <Text className="text-white text-4xl font-bold">WELCOME BACK</Text>
 
-        <TouchableOpacity onPress={() => {router.push("Signin")}}
+        <TouchableOpacity
+          onPress={() => {
+            router.push("Signin");
+          }}
           className="mt-[70%] w-[80%] border-2 border-[#007AFF] 
         rounded-full py-3"
         >
@@ -32,7 +35,10 @@ const Home = () => {
             SIGN IN
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {router.push("Signup")}}
+        <TouchableOpacity
+          onPress={() => {
+            router.push("Signup");
+          }}
           className="mt-[8%] w-[80%] bg-[#007AFF] 
         rounded-full py-3"
         >

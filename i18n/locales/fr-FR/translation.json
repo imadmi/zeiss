@@ -1,0 +1,34 @@
+
+{
+  "language": "Langue",
+  "signin": {
+    "sign_in": "SE CONNECTER",
+    "email_placeholder": "Email",
+    "password_placeholder": "Mot de passe",
+    "forgot_password": "Mot de passe oublié?",
+    "sign_in_button": "SE CONNECTER",
+    "no_account": "Vous n'avez pas de compte?",
+    "sign_up": "S'inscrire",
+    "language": "Langue"
+  },
+  "signup": {
+    "title": "S'INSCRIRE",
+    "firstNamePlaceholder": "Prénom",
+    "lastNamePlaceholder": "Nom de famille",
+    "emailPlaceholder": "Email",
+    "magasinPlaceholder": "Magasin",
+    "cityPlaceholder": "Ville",
+    "passwordPlaceholder": "Mot de passe",
+    "signUpButton": "S'INSCRIRE",
+    "alreadyHaveAccount": "Vous avez déjà un compte",
+    "signInText": "Se connecter"
+  },
+  "signIn": {
+    "changePassword": "Changer le mot de passe",
+    "oldPasswordPlaceholder": "Ancien mot de passe",
+    "newPasswordPlaceholder": "Nouveau mot de passe",
+    "applyButton": "Appliquer",
+    "errorIconDescription": "Icône d'erreur",
+    "backButton": "Retour"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "language": "Language",
+  "signin": {
+    "sign_in": "SIGN IN",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "forgot_password": "Forgot password?",
+    "sign_in_button": "SIGN IN",
+    "no_account": "Don't have an account?",
+    "sign_up": "Sign up",
+    "language": "Language"
+  },
+  "signup": {
+    "title": "SIGN UP",
+    "firstNamePlaceholder": "First name",
+    "lastNamePlaceholder": "Last name",
+    "emailPlaceholder": "Email",
+    "magasinPlaceholder": "Magasin",
+    "cityPlaceholder": "City",
+    "passwordPlaceholder": "Password",
+    "signUpButton": "SIGN UP",
+    "alreadyHaveAccount": "Already have an account",
+    "signInText": "Sign in"
+  },
+  "signIn": {
+    "changePassword": "Change password",
+    "oldPasswordPlaceholder": "Old password",
+    "newPasswordPlaceholder": "New password",
+    "applyButton": "Apply",
+    "errorIconDescription": "Error icon",
+    "backButton": "Back"
+  }
+}
