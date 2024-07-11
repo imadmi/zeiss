@@ -30,3 +30,19 @@ export interface ChatMessageHistory {
 }
 
 export type ChatHistoryType = ChatMessageHistory[];
+
+export type User = {
+  tel: string | null;
+  fname: string;
+  lname: string;
+  email: string;
+  magasin: string;
+  city_id: number;
+  city_name: string;
+  user_uuid: string;
+  address: string | null;
+  valide: boolean;
+  blocked: boolean;
+  latitude: number | null;
+  longitude: number | null;
+};

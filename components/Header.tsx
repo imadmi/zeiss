@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { router, useRouter } from "expo-router";
@@ -20,7 +19,7 @@ const Header = () => {
           backgroundColor: "rgba(12, 25, 47, 1)",
         }}
       >
-        <Text className="text-white font-semibold ml-6 text-lg">Zeiss</Text>
+        {/* <Text className="text-white font-semibold ml-6 text-lg">Zeiss</Text>
         <MaterialCommunityIcons
           name="bell-ring-outline"
           size={24}
@@ -28,7 +27,7 @@ const Header = () => {
           style={{
             marginRight: 24,
           }}
-        />
+        /> */}
       </View>
       <View
         className="absolute top-14 left-0 items-center justify-between

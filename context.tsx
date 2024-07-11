@@ -5,9 +5,8 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { ChatHistoryType, Choice } from "./app/chatTypes";
+import { ChatHistoryType, Choice, User } from "./app/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { use } from "i18next";
 
 type AppContextProps = {
   inpuType: "valid" | "notValid" | "text";
@@ -28,8 +27,10 @@ type AppContextProps = {
   isLoggedIn: (input: boolean) => void;
   accessToken: string;
   setAccessToken: (input: string) => void;
-  storeAccessToken: (input: string) => void;
+  storeAccessToken: (input: string, user: User) => void;
   getAccessToken: () => void;
+  user: User | null;
+  setUser: (input: User | null) => void;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -39,6 +40,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     getAccessToken();
+    getUser();
   }, []);
 
   const [inpuType, setInpuType] = useState<"valid" | "notValid" | "text">(
@@ -53,10 +55,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState("");
   const [loggedIn, isLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState("");
+  const [user, setUser] = useState<User | null>(null);
 
-  const storeAccessToken = async (accessToken: string) => {
+  const storeAccessToken = async (accessToken: string, user: User) => {
     try {
       await AsyncStorage.setItem("accessToken", accessToken);
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      setAccessToken(accessToken);
+      setUser(user);
     } catch (e) {
       console.log(e);
     }
@@ -71,6 +77,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const getUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem("user");
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+
+      return user != null ? JSON.parse(user) : null;
+    } catch (e) {}
   };
 
   const contextValue: AppContextProps = {
@@ -94,6 +111,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setAccessToken,
     storeAccessToken,
     getAccessToken,
+    user,
+    setUser,
   };
 
   return (

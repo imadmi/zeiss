@@ -29,11 +29,11 @@ if (
 const Signin = () => {
   const windowHeight = Dimensions.get("window").height;
   const context = useAppContext();
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [issecurepass, setIssecurepass] = useState(false);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [error, seterror] = useState("");
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const { t } = useTranslation();
 
@@ -81,15 +81,15 @@ const Signin = () => {
       // m@gmail.com mmmmmmmm
 
       const res = await result.json();
-      console.log(JSON.stringify(res, null, 2)); //
+      // console.log(JSON.stringify(res, null, 2)); //
+
       if (res.message) {
         seterror(res.message.split(".")[0]);
       }
       if (res.success === true) {
         router.push("(tabs)/home");
         context.isLoggedIn(true);
-        context.setAccessToken(res.access_token);
-        context.storeAccessToken(res.access_token);
+        context.storeAccessToken(res.access_token, res.user);
         seterror("");
         return;
       }

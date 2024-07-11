@@ -1,10 +1,16 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { Redirect } from 'expo-router';
-
+import { View, Text, Alert } from "react-native";
+import React, { useEffect } from "react";
+import { Redirect } from "expo-router";
 
 const Index = () => {
-    return <Redirect href="Home" />;
+//   const { expoPushToken, notification } = usePushNotifications();
+
+  // console.log(expoPushToken);
+
+
+
+    // return <Redirect href="Home" />;
+  return <Redirect href="(tabs)/history" />;
 };
 
 export default Index;

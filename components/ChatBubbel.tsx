@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ChatMessageHistory } from "../app/chatTypes";
+import { ChatMessageHistory } from "../app/types";
 import { useAppContext } from "@/context";
 import ChatMessage from "@/components/ChatMessage";
 import chatData from "@/app/chatData";

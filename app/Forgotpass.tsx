@@ -56,14 +56,13 @@ const Signin = () => {
       keyboardDidShowListener.remove();
     };
   }, []);
-  const accessToken = context.accessToken;
 
   const signin = async () => {
     try {
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${context.accessToken}`,
       };
 
       let body = {

@@ -1,14 +1,14 @@
 import { AppProvider } from "@/context";
 import { Stack } from "expo-router/stack";
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
-import '@/i18n'; 
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect, useState } from "react";
+import "@/i18n";
+
 
 export default function Layout() {
-
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function Layout() {
     return null;
   }
 
+  
 
   return (
     <AppProvider>
@@ -31,6 +32,7 @@ export default function Layout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="chat" options={{ headerShown: false }} />
         <Stack.Screen name="Forgotpass" options={{ headerShown: false }} />
+        <Stack.Screen name="User" options={{ headerShown: false }} />
       </Stack>
     </AppProvider>
   );

@@ -93,26 +93,6 @@ const Signup = () => {
       const res = await result.json();
       console.log(JSON.stringify(res, null, 2)); //
 
-      // {
-      //   "success": true,
-      //   "access_token": "118|NABGATx9XuMHYh8IuGEisUobjKbztzwXtDEaruHPjuq1kLIJAmDxXNh9Oy4BmPmQKiRYfAK6vl97y53tcDLerOliG5NbcMzRy8WVPJcrJiKlguo49qbcD2Y0M2bHeFTzSFJcGoTePd7AMaZxvzB4WKgW9igY1ok8PW6UkDlXwZ0tEz9VUCohIUVWCTbRhum4joI1eronTpl6AKYI5ljmZ0DBfi1QVdW5lqnRBUGeJrlUp7L2",
-      //   "user": {
-      //     "tel": null,
-      //     "fname": "immmm",
-      //     "lname": "immmmm",
-      //     "email": "m@gmail.com",
-      //     "magasin": "gggg",
-      //     "city_id": 1,
-      //     "city_name": "Meknes",
-      //     "user_uuid": "95522d02-d309-4a5f-9e21-4eb6af69819a",
-      //     "address": null,
-      //     "valide": false,
-      //     "blocked": false,
-      //     "latitude": null,
-      //     "longitude": null
-      //   }
-      // }
-
       seterror(res.message);
 
       if (res.success === false) {
@@ -122,7 +102,8 @@ const Signup = () => {
         router.push("(tabs)/home");
         context.isLoggedIn(true);
         context.setAccessToken(res.access_token);
-        context.storeAccessToken(res.access_token);
+        context.setUser(res.user);
+        context.storeAccessToken(res.access_token, res.user);
         seterror("");
         return;
       }

@@ -1,20 +1,26 @@
-import { Tabs } from "expo-router";
-import { Animated, Dimensions, Platform, View } from "react-native";
+import { router, Tabs } from "expo-router";
+import {
+  Animated,
+  Dimensions,
+  Platform,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Image } from "expo-image";
 import React from "react";
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { Feather } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const { width, height } = Dimensions.get("window");
   return (
     <Tabs
       initialRouteName="home"
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarHideOnKeyboard: true,
         tabBarInactiveTintColor: "#A0A0A0",
         tabBarActiveTintColor: "#FFFFFF",
         tabBarStyle: {
-          display: "flex",
           backgroundColor: "#0C192F",
           marginBottom: 50,
           height: 50,
@@ -22,11 +28,12 @@ export default function TabLayout() {
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 500,
+          // display: route.name === 'support' ? 'none' : 'flex',
+          display: "flex",
         },
         tabBarShowLabel: false,
         headerShown: false,
-      }}
-
+      })}
     >
       <Tabs.Screen
         name="index"
@@ -34,6 +41,31 @@ export default function TabLayout() {
           tabBarButton: () => null,
         }}
       />
+
+      <Tabs.Screen
+        name="support"
+        options={{
+          title: "support",
+          tabBarIcon: ({ color }) => (
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" && height > 800
+                  ? "translate-y-[13px] "
+                  : ""
+              } justify-center`}
+            >
+              <Image
+                source={require("../../assets/icons/items.png")}
+                placeholder="history"
+                contentFit="cover"
+                className={`w-[22px] h-[22px]`}
+                style={{ tintColor: color }}
+              />
+            </View>
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="history"
         options={{
@@ -41,15 +73,16 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <View
               className={`h-[60px] ${
-                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800
+                  ? "translate-y-[13px] "
+                  : ""
               } justify-center`}
             >
               <Image
                 source={require("../../assets/icons/history.png")}
                 placeholder="history"
                 contentFit="cover"
-                transition={1000}
-                className={`w-[24px] h-[24px]`}
+                className={`w-[26px] h-[26px]`}
                 style={{ tintColor: color }}
               />
             </View>
@@ -63,37 +96,62 @@ export default function TabLayout() {
           tabBarHideOnKeyboard: true,
           title: "home",
           tabBarIcon: ({ color, focused }) => (
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                router.push("chat");
+              }}
               className={`h-[60px] ${
-                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800
+                  ? "translate-y-[13px] "
+                  : ""
               }  justify-center`}
             >
               <Image
                 source={require("../../assets/icons/home.png")}
                 placeholder="history"
                 contentFit="cover"
-                transition={1000}
                 className={`w-[75px] h-[75px] rounded-full  ${
                   focused ? "" : "w-[70px] h-[70px]"
                 }`}
               />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="products"
+        options={{
+          title: "products",
+          tabBarIcon: ({ color }) => (
+            <View
+              className={`h-[60px] ${
+                Platform.OS === "ios" && height > 800
+                  ? "translate-y-[13px] "
+                  : ""
+              }  justify-center`}
+            >
+              <Feather name="shopping-bag" size={23} color={color} />
             </View>
           ),
         }}
       />
 
       <Tabs.Screen
-        name="User"
+        name="user"
         options={{
-          title: "User",
+          title: "user",
           tabBarIcon: ({ color }) => (
-            <View
+            <TouchableOpacity
+              onPress={() => router.push("User")}
               className={`h-[60px] ${
-                Platform.OS === "ios" && height > 800 ? "translate-y-[13px] " : ""
+                Platform.OS === "ios" && height > 800
+                  ? "translate-y-[13px] "
+                  : ""
               }  justify-center`}
             >
               <FontAwesome5 name="user-circle" size={24} color={color} />
-            </View>
+            </TouchableOpacity>
           ),
         }}
       />
