@@ -10,7 +10,8 @@ const Index = () => {
 
 
     // return <Redirect href="Home" />;
-  return <Redirect href="(tabs)/history" />;
+  // return <Redirect href="(tabs)/history" />;
+  return <Redirect href="(tabs)/products" />;
 };
 
 export default Index;

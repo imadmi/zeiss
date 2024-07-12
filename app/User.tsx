@@ -70,7 +70,7 @@ const User = () => {
       );
 
       const res = await result.json();
-      console.log(JSON.stringify(res, null, 2)); //
+      // console.log(JSON.stringify(res, null, 2)); //
 
       if (res.message) {
         seterror(res.message.split(".")[0]);
@@ -111,7 +111,6 @@ const User = () => {
           </TouchableOpacity>
         </View>
         <Image
-          id="history"
           source={require("../assets/icons/unknown_profile.jpg")}
           contentFit="cover"
           className="w-32 h-32 top-32 rounded-full border-2 border-white"

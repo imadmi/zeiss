@@ -53,32 +53,7 @@ const History = () => {
       notificationToken();
     }, [context.accessToken]);
 
-    React.useEffect(() => {
-      const getProducts = async () => {
-        try {
-          const headers = {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${context.accessToken}`,
-          };
-  
-          const result = await fetch(
-            `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/products`,
-            {
-              method: "GET",
-              headers,
-            }
-          );
-  
-          const res = await result.json();
-          console.log(JSON.stringify(res, null, 2)); //
 
-        } catch (error: any) {
-          if (error.message) console.log(error.message.split(".")[0]);
-        }
-      };
-      getProducts();
-    }, [context.accessToken]);
 
   return (
     <View className="flex-1 relative">
