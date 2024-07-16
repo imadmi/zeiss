@@ -78,9 +78,14 @@ const Signin = () => {
       );
 
       // imad@gmail.com imad@gmail.com
+      
+      //  130|b27ZP3apQriLxOw168Xb4L2OELk0QXaxTtEvRMp3KDmkxboo509N7muIlk5pft2o5AgCS9v7lsNmizhJ74T4Yi4v88RqNoIKGV6m7fTT8saKHtpoPWtcI64ZdCg2Zs3oY2xZZ4mIXr0G0wP0rS6UfGr3uAeWXLOGl2DyiGoGfwLFHVTaqmq25JEEuWdAOaHB0UA16BJQchWr5h8xeYLNRrse97g1whdDR8yaWSverUdZ64jt
+      
+      
       // m@gmail.com mmmmmmmm
-
+      
       const res = await result.json();
+      console.log(res.access_token);
       // console.log(JSON.stringify(res, null, 2)); //
 
       if (res.message) {

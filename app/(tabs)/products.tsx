@@ -1,7 +1,7 @@
 import { useAppContext } from "@/context";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
   Modal,
   Dimensions,
 } from "react-native";
+import { WINDOW_WIDTH } from "@gorhom/bottom-sheet";
 
 type Product = {
   product_id: number;
@@ -200,14 +201,91 @@ const Products = () => {
         if (error.message) console.log(error.message.split(".")[0]);
       }
     };
-    getProducts();
+    if (context.accessToken) {
+      getProducts();
+    }
+  }, [context.accessToken]);
+
+  // [
+  //   {
+  //     "banner_id": 4,
+  //     "banner_uuid": "82d01f88-b870-4c83-b916-348008134f5e",
+  //     "pic_path": "SVtdQ8c8mi42GZktK8FAoZlc37ci36L0k02D1Wbu.png"
+  //   },
+  //   {
+  //     "banner_id": 5,
+  //     "banner_uuid": "ab607a88-8ded-4a3e-823e-26f98514fc9b",
+  //     "pic_path": "1XcH6jPrZfI9BsYu4ooHK6jEfpl09894UEASeh2b.png"
+  //   },
+  //   {
+  //     "banner_id": 6,
+  //     "banner_uuid": "2c633cd3-66a8-475a-bd53-f394750e92d5",
+  //     "pic_path": "AYo71LP9fdDQ6WTgQeS7iRAdHSGZ1zcNVgCTpIzw.jpg"
+  //   }
+  // ]
+
+  const [urls, setUrls] = useState([]);
+  useEffect(() => {
+    const getBanners = async () => {
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${context.accessToken}`,
+        };
+        const bannersPromise = await fetch(
+          `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/banners`,
+          {
+            method: "GET",
+            headers,
+          }
+        );
+        if (bannersPromise.ok) {
+          const banners = await bannersPromise.json();
+          const bannerPromises = banners.map(async (banner: any) => {
+            const response = await fetch(
+              `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/banner/${banner.pic_path}`,
+              {
+                method: "GET",
+                headers,
+              }
+            );
+
+            if (response.ok) {
+              const blob = await response.blob();
+              const reader = new FileReader();
+
+              return new Promise((resolve, reject) => {
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () =>
+                  reject("Failed to read blob as data URL.");
+                reader.readAsDataURL(blob);
+              });
+            } else {
+              throw new Error(
+                `Error fetching banner: ${response.status} ${response.statusText}`
+              );
+            }
+          });
+
+          const urls = await Promise.all(bannerPromises);
+          setUrls(urls as any);
+        }
+      } catch (error: any) {
+        if (error.message) console.log(error.message.split(".")[0]);
+      }
+    };
+    if (context.accessToken) {
+      getBanners();
+    }
   }, [context.accessToken]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [bannerIndex, setbannerIndex] = useState(0);
   const scrollViewRef = React.useRef<ScrollView>(null);
+  const bannerRef = React.useRef<ScrollView>(null);
 
   const renderItem = ({ item }: { item: Product }) => (
     <TouchableOpacity
@@ -236,10 +314,35 @@ const Products = () => {
   const scrollToIndex = (index: number) => {
     setCurrentPhotoIndex(index);
     scrollViewRef.current?.scrollTo({
-      x: index * Dimensions.get("window").width,
+      x: index * screenDimensions.width,
       animated: true,
     });
   };
+
+  const scrollToBannerIndex = (index: number) => {
+    setCurrentPhotoIndex(index);
+    bannerRef.current?.scrollTo({
+      x: index * screenDimensions.width,
+      animated: true,
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setbannerIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % urls.length;
+        if (bannerRef.current) {
+          bannerRef.current.scrollTo({
+            x: nextIndex * screenDimensions.width,
+            animated: true,
+          });
+        }
+        return nextIndex;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [urls]);
 
   return (
     <View className="">
@@ -250,6 +353,55 @@ const Products = () => {
       >
         <Text className="text-white font-semibold text-2xl pb-4">Products</Text>
       </View>
+      <View style={{ width: screenDimensions.width, height: 220 }}>
+        <ScrollView
+          ref={bannerRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={(e) => {
+            const contentOffsetX = e.nativeEvent.contentOffset.x;
+            const index = Math.round(contentOffsetX / screenDimensions.width);
+            setbannerIndex(index);
+          }}
+          scrollEventThrottle={16}
+        >
+          {urls.length > 0 ? (
+            urls.map((url, index) => (
+              <View
+                key={index}
+                style={{ width: screenDimensions.width, height: 220 }}
+              >
+                <Image
+                  key={index}
+                  source={{ uri: url }}
+                  contentFit="fill"
+                  style={{ width: screenDimensions.width, height: 220 }}
+                />
+              </View>
+            ))
+          ) : (
+            <View style={{ width: screenDimensions.width, height: 220 }}>
+              <Text>Loading...</Text>
+            </View>
+          )}
+        </ScrollView>
+        <TouchableOpacity
+          onPress={() => scrollToBannerIndex(bannerIndex - 1)}
+          disabled={bannerIndex === 0}
+          className="absolute left-0 top-0 bottom-0 justify-center items-center w-10 bg-opacity-30"
+        >
+          <Ionicons name="chevron-back-outline" size={30} color="#D3D3D3" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => scrollToBannerIndex(bannerIndex + 1)}
+          disabled={bannerIndex === urls.length - 1}
+          className="absolute right-0 top-0 bottom-0 justify-center items-center w-10 bg-opacity-30"
+        >
+          <Ionicons name="chevron-forward-outline" size={30} color="#D3D3D3" />
+        </TouchableOpacity>
+      </View>
+
       <View className="items-center justify-center w-full h-[90%] pb-20">
         <FlatList
           // data={data}
@@ -289,7 +441,7 @@ const Products = () => {
                   onScroll={(e) => {
                     const contentOffsetX = e.nativeEvent.contentOffset.x;
                     const index = Math.round(
-                      contentOffsetX / Dimensions.get("window").width
+                      contentOffsetX / screenDimensions.width
                     );
                     setCurrentPhotoIndex(index);
                   }}
@@ -350,18 +502,6 @@ const Products = () => {
                   {selectedProduct.description}
                 </Text>
               </View>
-              <TouchableOpacity
-                // onPress={() => saveChanges()}
-                className="w-[70%] rounded-full py-3 mb-9"
-                style={{ backgroundColor: "rgba(12, 25, 47, 1)" }}
-              >
-                <Text
-                  className="text-white text-xl font-semibold
-          text-center"
-                >
-                  Achat
-                </Text>
-              </TouchableOpacity>
             </View>
           </ScrollView>
         </Modal>
