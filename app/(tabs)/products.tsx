@@ -12,7 +12,7 @@ import {
   Modal,
   Dimensions,
 } from "react-native";
-import { WINDOW_WIDTH } from "@gorhom/bottom-sheet";
+import LottieView from "lottie-react-native";
 
 type Product = {
   product_id: number;
@@ -28,153 +28,11 @@ type Product = {
   }[];
 };
 
-const product: Product[] = [
-  {
-    product_id: 253,
-    product_name: "ZIESS1",
-    description:
-      "Luiorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas fermentum turpis, in finibus tellus aliquet eget. Vivamus vitae semper risus. Suspendisse porttitor sapien a lacinia ultrices. Quisque semper justo in augue viverra, ac congue felis bibendum. Maecenas porta molestie diam vel rhoncus. Aenean mollis non nisl quis sagittis. Maecenas quis risus egestas elit suscipit accumsan. Quisque eget mauris augue. Maecenas non erat egestas, sagittis lectus lacinia, lacinia nisl. Nam tempus mi cursus, interdum nisi eu, malesuada neque.\r\n\r\nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse sed metus condimentum, interdum libero vel, mollis elit. Cras ut tincidunt massa. Integer id tellus ut diam scelerisque placerat. Vivamus varius sem vitae lectus pulvinar, quis placerat orci consectetur. Ut eget elit diam. In venenatis sapien faucibus mi tincidunt, vel vulputate ex porta. Nunc in posuere nibh. Vestibulum ullamcorper fringilla felis et placerat.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 20,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 253,
-        main: 1,
-      },
-    ],
-  },
-  {
-    product_id: 254,
-    product_name: "Test",
-    description:
-      "Suspendisse pulvinar venenatis sem vel maximus. Vivamus quis odio et tellus aliquam vestibulum. Etiam id nulla id magna mollis mattis vel non libero. Pellentesque posuere efficitur massa, sit amet facilisis ex accumsan nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed egestas est quis dolor facilisis posuere. Vivamus vehicula dui non tortor tristique tristique. Donec ut sagittis mauris. Pellentesque tincidunt turpis vitae ipsum vestibulum condimentum. Phasellus faucibus felis ut nulla rutrum, vitae fermentum magna iaculis. Mauris risus metus, placerat sollicitudin massa non, faucibus auctor massa. Donec mauris quam, lobortis sed odio ut, eleifend tincidunt neque. Vestibulum quis tincidunt nulla. Vivamus a risus mi. Donec felis ante, euismod at diam ac, ultricies pulvinar magna.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 21,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 1,
-      },
-      {
-        pic_id: 22,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 0,
-      },
-    ],
-  },
-  {
-    product_id: 224,
-    product_name: "Test1",
-    description:
-      "Suspendisse pulvinar venenatis sem vel maximus. Vivamus quis odio et tellus aliquam vestibulum. Etiam id nulla id magna mollis mattis vel non libero. Pellentesque posuere efficitur massa, sit amet facilisis ex accumsan nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed egestas est quis dolor facilisis posuere. Vivamus vehicula dui non tortor tristique tristique. Donec ut sagittis mauris. Pellentesque tincidunt turpis vitae ipsum vestibulum condimentum. Phasellus faucibus felis ut nulla rutrum, vitae fermentum magna iaculis. Mauris risus metus, placerat sollicitudin massa non, faucibus auctor massa. Donec mauris quam, lobortis sed odio ut, eleifend tincidunt neque. Vestibulum quis tincidunt nulla. Vivamus a risus mi. Donec felis ante, euismod at diam ac, ultricies pulvinar magna.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 21,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 1,
-      },
-      {
-        pic_id: 22,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 0,
-      },
-    ],
-  },
-  {
-    product_id: 255,
-    product_name: "Test2",
-    description:
-      "Suspendisse pulvinar venenatis sem vel maximus. Vivamus quis odio et tellus aliquam vestibulum. Etiam id nulla id magna mollis mattis vel non libero. Pellentesque posuere efficitur massa, sit amet facilisis ex accumsan nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed egestas est quis dolor facilisis posuere. Vivamus vehicula dui non tortor tristique tristique. Donec ut sagittis mauris. Pellentesque tincidunt turpis vitae ipsum vestibulum condimentum. Phasellus faucibus felis ut nulla rutrum, vitae fermentum magna iaculis. Mauris risus metus, placerat sollicitudin massa non, faucibus auctor massa. Donec mauris quam, lobortis sed odio ut, eleifend tincidunt neque. Vestibulum quis tincidunt nulla. Vivamus a risus mi. Donec felis ante, euismod at diam ac, ultricies pulvinar magna.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 21,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 1,
-      },
-      {
-        pic_id: 22,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 0,
-      },
-    ],
-  },
-  {
-    product_id: 22215,
-    product_name: "Test3",
-    description:
-      "Suspendisse pulvinar venenatis sem vel maximus. Vivamus quis odio et tellus aliquam vestibulum. Etiam id nulla id magna mollis mattis vel non libero. Pellentesque posuere efficitur massa, sit amet facilisis ex accumsan nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed egestas est quis dolor facilisis posuere. Vivamus vehicula dui non tortor tristique tristique. Donec ut sagittis mauris. Pellentesque tincidunt turpis vitae ipsum vestibulum condimentum. Phasellus faucibus felis ut nulla rutrum, vitae fermentum magna iaculis. Mauris risus metus, placerat sollicitudin massa non, faucibus auctor massa. Donec mauris quam, lobortis sed odio ut, eleifend tincidunt neque. Vestibulum quis tincidunt nulla. Vivamus a risus mi. Donec felis ante, euismod at diam ac, ultricies pulvinar magna.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 21,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 1,
-      },
-      {
-        pic_id: 22,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 0,
-      },
-    ],
-  },
-  {
-    product_id: 23155,
-    product_name: "Test4",
-    description:
-      "Suspendisse pulvinar venenatis sem vel maximus. Vivamus quis odio et tellus aliquam vestibulum. Etiam id nulla id magna mollis mattis vel non libero. Pellentesque posuere efficitur massa, sit amet facilisis ex accumsan nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed egestas est quis dolor facilisis posuere. Vivamus vehicula dui non tortor tristique tristique. Donec ut sagittis mauris. Pellentesque tincidunt turpis vitae ipsum vestibulum condimentum. Phasellus faucibus felis ut nulla rutrum, vitae fermentum magna iaculis. Mauris risus metus, placerat sollicitudin massa non, faucibus auctor massa. Donec mauris quam, lobortis sed odio ut, eleifend tincidunt neque. Vestibulum quis tincidunt nulla. Vivamus a risus mi. Donec felis ante, euismod at diam ac, ultricies pulvinar magna.",
-    pic: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-    is_ordrable: false,
-    product_pics: [
-      {
-        pic_id: 21,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 1,
-      },
-      {
-        pic_id: 22,
-        pic_path:
-          "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        product_id: 254,
-        main: 0,
-      },
-    ],
-  },
-];
-
 const Products = () => {
   const context = useAppContext();
-  const [data, setData] = React.useState<Product>();
-  // get the screen dimentions
+  const [data, setData] = useState<Product>();
   const screenDimensions = Dimensions.get("window");
-
-  React.useEffect(() => {
+  useEffect(() => {
     const getProducts = async () => {
       try {
         const headers = {
@@ -193,38 +51,56 @@ const Products = () => {
 
         const res = await result.json();
         if (res.data) {
-          setData(res.data);
-          return;
+          const products = res.data;
+
+          // Fetch images for each product
+          const productImagePromises = products.map(async (product: any) => {
+            const imageResponse = await fetch(
+              `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/product/images/${product.pic}`,
+              {
+                method: "GET",
+                headers,
+              }
+            );
+
+            if (imageResponse.ok) {
+              const blob = await imageResponse.blob();
+              const reader = new FileReader();
+
+              return new Promise((resolve, reject) => {
+                reader.onload = () => {
+                  product.pic = reader.result;
+                  resolve(product);
+                };
+                reader.onerror = () =>
+                  reject("Failed to read blob as data URL.");
+                reader.readAsDataURL(blob);
+              });
+            } else {
+              console.error("Failed to fetch product image.");
+              return product;
+            }
+          });
+
+          const updatedProducts = await Promise.all(productImagePromises);
+          // console.log(JSON.stringify(updatedProducts, null, 2));//
+
+          setData(updatedProducts as any);
+        } else {
+          console.error("Failed to fetch products.");
         }
-        // console.log(JSON.stringify(res, null, 2)); //
       } catch (error: any) {
-        if (error.message) console.log(error.message.split(".")[0]);
+        if (error.message) console.error(`Error: ${error.message}`);
       }
     };
+
     if (context.accessToken) {
       getProducts();
     }
   }, [context.accessToken]);
 
-  // [
-  //   {
-  //     "banner_id": 4,
-  //     "banner_uuid": "82d01f88-b870-4c83-b916-348008134f5e",
-  //     "pic_path": "SVtdQ8c8mi42GZktK8FAoZlc37ci36L0k02D1Wbu.png"
-  //   },
-  //   {
-  //     "banner_id": 5,
-  //     "banner_uuid": "ab607a88-8ded-4a3e-823e-26f98514fc9b",
-  //     "pic_path": "1XcH6jPrZfI9BsYu4ooHK6jEfpl09894UEASeh2b.png"
-  //   },
-  //   {
-  //     "banner_id": 6,
-  //     "banner_uuid": "2c633cd3-66a8-475a-bd53-f394750e92d5",
-  //     "pic_path": "AYo71LP9fdDQ6WTgQeS7iRAdHSGZ1zcNVgCTpIzw.jpg"
-  //   }
-  // ]
-
   const [urls, setUrls] = useState([]);
+
   useEffect(() => {
     const getBanners = async () => {
       try {
@@ -262,9 +138,7 @@ const Products = () => {
                 reader.readAsDataURL(blob);
               });
             } else {
-              throw new Error(
-                `Error fetching banner: ${response.status} ${response.statusText}`
-              );
+              console.log("Failed to fetch banner image.");
             }
           });
 
@@ -287,6 +161,56 @@ const Products = () => {
   const scrollViewRef = React.useRef<ScrollView>(null);
   const bannerRef = React.useRef<ScrollView>(null);
 
+  useEffect(() => {
+    try {
+      const fetchImages = async () => {
+        if (selectedProduct) {
+          const headers = {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${context.accessToken}`,
+          };
+          const promises = selectedProduct.product_pics.map(async (item) => {
+            const response = await fetch(
+              `${process.env.EXPO_PUBLIC_API_BACKEND}/api/app/product/images/${item.pic_path}`,
+              {
+                method: "GET",
+                headers,
+              }
+            );
+            if (response.ok) {
+              const blob = await response.blob();
+              const reader = new FileReader();
+              return new Promise((resolve, reject) => {
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () =>
+                  reject("Failed to read blob as data URL.");
+                reader.readAsDataURL(blob);
+                return reader.result;
+              });
+            } else {
+              console.error("Failed to fetch product image.");
+            }
+          });
+          const productPics = await Promise.all(promises);
+          if (productPics.length === selectedProduct.product_pics.length) {
+            setSelectedProduct({
+              ...selectedProduct,
+              product_pics: selectedProduct.product_pics.map((pic, index) => ({
+                ...pic,
+                pic_path: productPics[index] as string,
+              })),
+            });
+          }
+        }
+      };
+
+      if (context.accessToken && modalVisible === true) fetchImages();
+    } catch (error: any) {
+      if (error.message) console.log(error.message.split(".")[0]);
+    }
+  }, [context.accessToken, modalVisible]);
+
   const renderItem = ({ item }: { item: Product }) => (
     <TouchableOpacity
       onPress={() => {
@@ -297,10 +221,10 @@ const Products = () => {
       className="w-[46%] h-64 bg-gray-200 rounded-xl m-2 mb-2"
     >
       <Image
-        // source={{ uri: item.pic }}
-        source={{
-          uri: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
-        }}
+        source={{ uri: item.pic }}
+        // source={{
+        //   uri: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
+        // }}
         contentFit="cover"
         className="w-full h-44 rounded-t-lg"
       />
@@ -381,8 +305,18 @@ const Products = () => {
               </View>
             ))
           ) : (
-            <View style={{ width: screenDimensions.width, height: 220 }}>
-              <Text>Loading...</Text>
+            <View
+              style={{ width: screenDimensions.width, height: 220 }}
+              className="items-center justify-center"
+            >
+              <LottieView
+                autoPlay
+                style={{
+                  width: 60,
+                  height: 40,
+                }}
+                source={require("../../assets/icons/loadingC.json")}
+              />
             </View>
           )}
         </ScrollView>
@@ -404,8 +338,8 @@ const Products = () => {
 
       <View className="items-center justify-center w-full h-[90%] pb-20">
         <FlatList
-          // data={data}
-          data={product}
+          data={data}
+          // data={product}
           renderItem={renderItem}
           keyExtractor={(item) => item.product_id.toString()}
           numColumns={2}
@@ -454,16 +388,18 @@ const Products = () => {
                         width: screenDimensions.width,
                         height: screenDimensions.height * 0.45,
                       }}
-                      // className="shadow-2xl"
                     >
-                      <Image
-                        key={pic.pic_id}
-                        source={{
-                          uri: pic.pic_path,
-                        }}
-                        contentFit="contain"
-                        className="w-full h-full"
-                      />
+                        <Image
+                          key={pic.pic_id}
+                          source={{
+                            uri: pic.pic_path,
+                          }}
+                          // source={{
+                          //   uri: "https://static.vecteezy.com/system/resources/previews/007/451/786/large_2x/an-outline-isometric-icon-of-unknown-product-vector.jpg",
+                          // }}
+                          contentFit="contain"
+                          className="w-full h-full"
+                        />
                     </View>
                   ))}
                 </ScrollView>
